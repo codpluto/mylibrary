@@ -32,8 +32,7 @@ public interface BookMapper {
             "lender=#{lender},isLentOut=#{isLentOut},buyFrom=#{buyFrom},buyDate=#{buyDate},price=#{price},author=#{author}," +
             "translator=#{translator},press=#{press},publicationDate=#{publicationDate},totalPages=#{totalPages}," +
             "readProgress=#{readProgress},contentIntroduction=#{contentIntroduction},authorIntroduction=#{authorIntroduction}," +
-            "shelf_id=#{shelf_id}"+
-            " WHERE user_id=#{user_id} AND isbn=#{isbn}")
+            "shelf_id=#{shelf_id} WHERE user_id=#{user_id} AND isbn=#{isbn}")
     int updateBook(@Param("isbn") String isbn, @Param("bookName") String bookName, @Param("coverUrl") String coverUrl,
                    @Param("notes") String notes, @Param("lender") String lender,
                    @Param("isLentOut") boolean isLentOut, @Param("buyFrom") String buyFrom, @Param("buyDate") String buyDate,

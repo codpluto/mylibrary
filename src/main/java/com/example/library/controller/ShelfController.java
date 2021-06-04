@@ -42,6 +42,10 @@ public class ShelfController {
         log.info("user_id:{}",user_id);
         log.info("shelfName:{}",shelfName);
         List<Book> books = shelfMapper.selectBookInShelf(user_id,shelfName);
+        for(int i=0;i<books.size();i++){
+            if(books.get(i).getShelf_id()!=null)
+                books.get(i).setShelfName(shelfMapper.getShelfNameById(books.get(i).getShelf_id()));
+        }
         jr.setObj(books);
         if(books.size()==0){
             jr.setStatus(0);

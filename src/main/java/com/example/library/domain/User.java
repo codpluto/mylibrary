@@ -11,6 +11,8 @@ public class User {
     private String email;
     private String phone;
     private int user_id;
+    private int vip;
+
 //    private int status;
 
     public User(String username,String password,String email,String phone,int user_id){
@@ -61,6 +63,14 @@ public class User {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public int getVip() {
+        return vip;
+    }
+
+    public void setVip(int vip) {
+        this.vip = vip;
     }
 
     //    public int getStatus() {

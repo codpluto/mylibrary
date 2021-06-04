@@ -3,6 +3,7 @@ package com.example.library.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.library.domain.Book;
 import com.example.library.mapper.BookMapper;
+import com.example.library.mapper.ShelfMapper;
 import com.example.library.service.BookService;
 import com.example.library.utils.Author2Number;
 import com.example.library.utils.JsonResult;
@@ -28,6 +29,9 @@ public class BookController {
     @Autowired
     private BookMapper bookMapper;
 
+    @Autowired
+    private ShelfMapper shelfMapper;
+
 //    @RequestMapping("addBook")
 //    public int addBook(String isbn,String bookName,String coverUrl,String bookShelf,String notes,String lender,
 //                          boolean isLentOut,String buyFrom,String buyDate,double price,String author,String translator,
@@ -49,6 +53,10 @@ public class BookController {
         log.info("user_id:{}",user_id);
         log.info("bookName:{}",bookName);
         List<Book> book = bookMapper.selectBookLike(bookName,user_id);
+        for(int i=0;i<book.size();i++){
+            if(book.get(i).getShelf_id()!=null)
+                book.get(i).setShelfName(shelfMapper.getShelfNameById(book.get(i).getShelf_id()));
+        }
         JsonResult jr = new JsonResult();
         jr.setObj(book);
         if(book.size()==0){
@@ -65,6 +73,8 @@ public class BookController {
         Book book = bookMapper.selectBook(isbn,user_id);
 
         JsonResult jr = new JsonResult();
+        if(book.getShelf_id()!=null)
+            book.setShelfName(shelfMapper.getShelfNameById(book.getShelf_id()));
         jr.setObj(book);
         System.out.println(jr.getObj());
         if(book==null){

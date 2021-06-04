@@ -33,4 +33,7 @@ public interface ShelfMapper {
     @Delete("DELETE FROM ShelfInfo WHERE user_id=#{user_id} AND ShelfName=#{shelfName}")
     int deleteShelf(@Param("user_id") int user_id, @Param("shelfName") String shelfName);
 
+    @Select("SELECT shelfName FROM ShelfInfo WHERE shelf_id=#{shelf_id}")
+    String getShelfNameById(@Param("shelf_id") int shelf_id);
+
 }

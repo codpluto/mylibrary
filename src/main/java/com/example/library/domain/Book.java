@@ -24,6 +24,8 @@ public class Book {
     private String authorIntroduction;
     private Integer user_id;
     private Integer shelf_id;
+    private String shelfName;
+
 
     public String getIsbn() {
         return isbn;
@@ -194,6 +196,13 @@ public class Book {
         this.shelf_id = shelf_id;
     }
 
+    public String getShelfName() {
+        return shelfName;
+    }
+
+    public void setShelfName(String shelfName) {
+        this.shelfName = shelfName;
+    }
 
     //    public int getStatus() {
 //        return status;
