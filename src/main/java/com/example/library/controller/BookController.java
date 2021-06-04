@@ -145,6 +145,10 @@ public class BookController {
     public JsonResult getAllBookByUserid(int user_id){
         JsonResult jr = new JsonResult();
         List<Book> books = bookMapper.selectAllBook(user_id);
+        for(int i=0;i<books.size();i++){
+            if(books.get(i).getShelf_id()!=null)
+                books.get(i).setShelfName(shelfMapper.getShelfNameById(books.get(i).getShelf_id()));
+        }
         jr.setObj(books);
         if(books.size()==0){
             jr.setStatus(0);        //0,没有图书
