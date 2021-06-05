@@ -26,7 +26,8 @@ public class UserController {
         if(user==null){
             User u = new User(null,null,null,null,0);
             jr.setObj(u);
-            jr.setStatus(-1);           //-1，账户不存在
+            jr.setStatus(-1);   //-1，账户不存在
+            return jr;
         }
         if(Objects.equals(password,user.getPassword())) {
             jr.setStatus(1);
