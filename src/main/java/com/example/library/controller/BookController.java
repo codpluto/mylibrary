@@ -92,7 +92,7 @@ public class BookController {
     public JsonResult addBook(@RequestBody Book newbook) {
 //        if(newbook.getShelf_id()==0)
 //            newbook.setShelf_id(null);
-        log.info("newbook:{}",newbook);
+        //log.info("newbook:{}",newbook);
 
         Book book = bookMapper.selectBook(newbook.getIsbn(),newbook.getUser_id());
         JsonResult jr = new JsonResult();
@@ -103,6 +103,9 @@ public class BookController {
         //String result = BookService.getDataByIsbn(isbn);
 
         //jr.setObj(JSON.toJSON(result));
+        if(newbook.getShelf_id()!=null){
+            shelfMapper.updateCountOfBooks_plus(newbook.getShelf_id());
+        }
         int resultCount = bookMapper.saveBook(newbook.getIsbn(),newbook.getBookName(),newbook.getCoverUrl(),newbook.getNotes(),
                 newbook.getLender(),newbook.isLentOut(),newbook.getBuyFrom(),newbook.getBuyDate(),newbook.getPrice(),
                 newbook.getAuthor(),newbook.getTranslator(),newbook.getPress(),newbook.getPublicationDate(),newbook.getTotalPages(),newbook.getReadProgress(),
@@ -120,6 +123,13 @@ public class BookController {
 //                          String press,String publicationDate,int totalPages,int readProgress,String contentIntroduction,
 //                          String authorIntroduction,String user_id){
 
+        Book oriBook = bookMapper.selectBook(book.getIsbn(),book.getUser_id());
+        Integer shelf_id = oriBook.getShelf_id();
+        if(shelf_id!=null){
+            shelfMapper.updateCountOfBook_minus(shelf_id);
+        }
+        shelfMapper.updateCountOfBooks_plus(book.getShelf_id());
+
         int resultCount = bookMapper.updateBook(book.getIsbn(),book.getBookName(),book.getCoverUrl(),book.getNotes(),book.getLender(),
                 book.isLentOut(),book.getBuyFrom(),book.getBuyDate(),book.getPrice(),book.getAuthor(),book.getTranslator(),book.getPress(),
                 book.getPublicationDate(),book.getTotalPages(),book.getReadProgress(),book.getContentIntroduction(),book.getAuthorIntroduction(),
@@ -135,8 +145,16 @@ public class BookController {
     @RequestMapping("deleteBook")
     public JsonResult dropBook(@RequestBody Book book){
         int resultCount = bookMapper.deleteBook(book.getUser_id(),book.getIsbn());
+
         JsonResult jr = new JsonResult();
         jr.setStatus(resultCount);
+        if(resultCount==1){
+            Book oriBook = bookMapper.selectBook(book.getIsbn(),book.getUser_id());
+            Integer shelf_id = oriBook.getShelf_id();
+            if(shelf_id!=null){
+                shelfMapper.updateCountOfBook_minus(shelf_id);
+            }
+        }
         return jr;
     }
 

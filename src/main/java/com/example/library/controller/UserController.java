@@ -19,6 +19,7 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
+    //登录
     @RequestMapping("login")
     public JsonResult login(String password, String phone){
         User user = userMapper.selectUser(phone);
@@ -40,6 +41,7 @@ public class UserController {
         return jr;
     }
 
+    //注册
     @RequestMapping("register")
     public JsonResult register(String username,String password,String email,String phone){
 //        log.info("username{}",username);
@@ -67,7 +69,39 @@ public class UserController {
         return jr;
     }
 
+    //修改用户信息
+    @RequestMapping("changeUserInfo")
+    public JsonResult changeUserInfo(String userName,String email,String password,String phone,int user_id){
+        JsonResult jr = new JsonResult();
+        User oldUser = userMapper.selectUserById(user_id);
+        if(!Objects.equals(oldUser.getPhone(),phone)){
+            User user = userMapper.selectUserByPhone(phone);
+            if(user!=null){
+                jr.setStatus(-1);       //-1,手机号已注册
+                return jr;
+            }
+        }
+        if(!Objects.equals(oldUser.getEmail(),email)){
+            User user = userMapper.selectUserByEmail(email);
+            if(user!=null){
+                jr.setStatus(-2);       //-2,邮箱已注册
+                return jr;
+            }
+        }
+        int result = userMapper.updateUser(userName,email,password,phone,user_id);
+        jr.setStatus(result);
+        return jr;
+    }
 
+
+    //设置vip等级
+    @RequestMapping("setVip")
+    public JsonResult setVip(Integer vip,int user_id){
+        JsonResult jr = new JsonResult();
+        int result = userMapper.updateVip(vip,user_id);
+        jr.setStatus(result);
+        return jr;
+    }
 
 
 }

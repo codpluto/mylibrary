@@ -36,4 +36,9 @@ public interface ShelfMapper {
     @Select("SELECT shelfName FROM ShelfInfo WHERE shelf_id=#{shelf_id}")
     String getShelfNameById(@Param("shelf_id") int shelf_id);
 
+    @Update("UPDATE ShelfInfo SET CountOfBooks=CountOfBooks+1 WHERE shelf_id=#{shelf_id}")
+    int updateCountOfBooks_plus(@Param("shelf_id") int shelf_id);
+
+    @Update("UPDATE ShelfInfo SET CountOfBooks=CountOfBooks-1 WHERE shelf_id=#{shelf_id}")
+    int updateCountOfBook_minus(@Param("shelf_id") int shelf_id);
 }
