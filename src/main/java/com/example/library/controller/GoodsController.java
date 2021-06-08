@@ -21,7 +21,7 @@ public class GoodsController {
 
     //精确查询商品信息，根据good_id
     @RequestMapping("searchGood")
-    public JsonResult searchBook(int good_id){
+    public JsonResult searchGood(int good_id){
         JsonResult jr = new JsonResult();
         Good good = goodsMapper.selectGood(good_id);
         if(good==null){
@@ -51,7 +51,8 @@ public class GoodsController {
     public JsonResult addGood(@RequestBody Good newgood){
         JsonResult jr = new JsonResult();
         int result = goodsMapper.saveGoods(newgood.getISBN(),newgood.getOrigPrice(),newgood.getPracticalPrice(),newgood.getAuthor(),
-                newgood.getPublishDate(),newgood.getPress(),newgood.getIntroduction(),newgood.getCreateDate(),newgood.getUser_id(),newgood.isSoldOut());
+                newgood.getPublishDate(),newgood.getPress(),newgood.getIntroduction(),newgood.getCreateDate(),newgood.getUser_id(),
+                newgood.getConditions(),newgood.getBookName());
         jr.setStatus(result);
         return jr;
     }
@@ -63,6 +64,10 @@ public class GoodsController {
         Good good = goodsMapper.selectGood(good_id);
         if(good==null){
             jr.setStatus(-1);       //-1,该商品不存在
+            return jr;
+        }
+        if(good.isSoldOut()==true){
+            jr.setStatus(-2);
             return jr;
         }
         int result = goodsMapper.updateGoods(newPrice,good_id);

@@ -11,10 +11,11 @@ import java.util.List;
 public interface GoodsMapper {
 
     //添加商品信息
-    @Insert("INSERT INTO GoodsInfo(ISBN,origPrice,practicalPrice author,publishDate,press,introduction,createDate,isSoldOut) " +
-            "VALUES(#{isbn},#{origPrice},#{practicalPrice},#{author},#{publishDate},#{press},#{introduction},#{createDate},#{user_id},#{isSoldOut})")
-    int saveGoods(@Param("isbn") String isbn, @Param("origPrice") double origPrice, @Param("practicalPrice") double practicalPrice, @Param("author") String author, @Param("publishDate") String publishDate, @Param("press") String press, @Param("introduction") String introduction,
-                  @Param("createDate") String createDate, @Param("user_id") int user_id, @Param("isSoldOut") boolean isSoldOut);
+    @Insert("INSERT INTO GoodsInfo(ISBN,origPrice,practicalPrice,author,publishDate,press,introduction,createDate,user_id,bookName,conditions) " +
+            "VALUES(#{isbn},#{origPrice},#{practicalPrice},#{author},#{publishDate},#{press},#{introduction},#{createDate},#{user_id},#{bookName},#{conditions})")
+    int saveGoods(@Param("isbn") String isbn, @Param("origPrice") double origPrice, @Param("practicalPrice") double practicalPrice,
+                  @Param("author") String author, @Param("publishDate") String publishDate, @Param("press") String press, @Param("introduction") String introduction,
+                  @Param("createDate") String createDate, @Param("user_id") int user_id, @Param("conditions") int conditions, @Param("bookName") String bookName);
 
     //修改商品信息
     @Update("UPDATE GoodsInfo SET practicalPrice=#{practicalPrice} WHERE good_id=#{good_id}")

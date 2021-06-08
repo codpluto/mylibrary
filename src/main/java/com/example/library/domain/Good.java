@@ -16,6 +16,8 @@ public class Good {
     private String createDate;
     private int user_id;
     private boolean isSoldOut;
+    private int conditions;
+    private String bookName;
 
     public int getGood_id() {
         return good_id;
@@ -103,5 +105,21 @@ public class Good {
 
     public void setSoldOut(boolean soldOut) {
         isSoldOut = soldOut;
+    }
+
+    public int getConditions() {
+        return conditions;
+    }
+
+    public void setConditions(int conditions) {
+        this.conditions = conditions;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
     }
 }

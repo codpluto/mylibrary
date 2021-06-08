@@ -17,6 +17,7 @@ public class OrderList {
     private String address;
     private String state;
     private int good_id;
+    private int publisher_id;
 
     public String getOrderID() {
         return orderID;
@@ -112,5 +113,13 @@ public class OrderList {
 
     public void setGood_id(int good_id) {
         this.good_id = good_id;
+    }
+
+    public int getPublisher_id() {
+        return publisher_id;
+    }
+
+    public void setPublisher_id(int publisher_id) {
+        this.publisher_id = publisher_id;
     }
 }

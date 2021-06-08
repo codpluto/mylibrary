@@ -30,12 +30,13 @@ public class OrderListController {
         JsonResult jr = new JsonResult();
         int result = orderListMapper.saveOrderList(orderList.getOrderID(),orderList.getUser_id(),orderList.getCreateDate(),
                 orderList.getConsignee(),orderList.getPhone(),orderList.getOrigPrice(),orderList.getPracticalPrice(),
-                orderList.getNotes(),orderList.getAddress(),orderList.getGood_id());
+                orderList.getNotes(),orderList.getAddress(),orderList.getGood_id(),orderList.getPublisher_id());
         if(result==0){
             jr.setStatus(0);        //0,增加订单失败
             return jr;
         }
         jr.setStatus(1);
+        goodsMapper.updateSoldOut(orderList.getGood_id(),true);
         return jr;
     }
 

@@ -9,11 +9,11 @@ import java.util.List;
 public interface OrderListMapper {
 
     //增加订单
-    @Insert("INSERT INTO OrderList(orderID,user_id,createDate,consignee,phone,origPrice,practicalPrice,notes,good_id) " +
-            "VALUES(#{orderID},#{user_id},#{createDate},#{consignee},#{phone},#{origPrice},#{practicalPrice},#{notes},#{address},#{good_id})")
+    @Insert("INSERT INTO OrderList(orderID,user_id,createDate,consignee,phone,origPrice,practicalPrice,notes,address,good_id,publisher_id) " +
+            "VALUES(#{orderID},#{user_id},#{createDate},#{consignee},#{phone},#{origPrice},#{practicalPrice},#{notes},#{address},#{good_id},#{publisher_id})")
     int saveOrderList(@Param("orderID") String orderID, @Param("user_id") int user_id, @Param("createDate") String createDate,
                       @Param("consignee") String consignee, @Param("phone") String phone, @Param("origPrice") double origPrice,
-                      @Param("practicalPrice") double practicalPrice, @Param("notes") String notes, @Param("address") String address, @Param("good_id") int good_id);
+                      @Param("practicalPrice") double practicalPrice, @Param("notes") String notes, @Param("address") String address, @Param("good_id") int good_id, @Param("publisher_id") int publisher_id);
 
     //处理订单
     @Update("UPDATE OrderList SET state=#{state} WHERE orderID=#{orderID}")
