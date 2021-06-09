@@ -15,7 +15,7 @@ public class OrderList {
     private double practicalPrice;
     private String notes;
     private String address;
-    private String state;
+    private int state;
     private int good_id;
     private int publisher_id;
 
@@ -99,11 +99,11 @@ public class OrderList {
         this.address = address;
     }
 
-    public String getState() {
+    public int getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(int state) {
         this.state = state;
     }
 

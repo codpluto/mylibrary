@@ -58,8 +58,8 @@ public class GoodsController {
     }
 
     //修改商品价格
-    @RequestMapping("changeGood")
-    public JsonResult changeGood(int good_id,double newPrice){
+    @RequestMapping("changePrice")
+    public JsonResult changePrice(int good_id,double newPrice){
         JsonResult jr = new JsonResult();
         Good good = goodsMapper.selectGood(good_id);
         if(good==null){

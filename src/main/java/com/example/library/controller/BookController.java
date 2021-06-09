@@ -128,7 +128,9 @@ public class BookController {
         if(shelf_id!=null){
             shelfMapper.updateCountOfBook_minus(shelf_id);
         }
-        shelfMapper.updateCountOfBooks_plus(book.getShelf_id());
+        if(book.getShelf_id()!=null){
+            shelfMapper.updateCountOfBooks_plus(book.getShelf_id());
+        }
 
         int resultCount = bookMapper.updateBook(book.getIsbn(),book.getBookName(),book.getCoverUrl(),book.getNotes(),book.getLender(),
                 book.isLentOut(),book.getBuyFrom(),book.getBuyDate(),book.getPrice(),book.getAuthor(),book.getTranslator(),book.getPress(),
