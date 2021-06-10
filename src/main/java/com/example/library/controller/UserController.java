@@ -93,6 +93,19 @@ public class UserController {
         return jr;
     }
 
+    //根据user_id查询用户信息
+    @RequestMapping("getUserById")
+    public JsonResult getUserById(int user_id){
+        JsonResult jr = new JsonResult();
+        User user = userMapper.selectUserById(user_id);
+        if(user==null){
+            jr.setStatus(0);
+            return jr;
+        }
+        jr.setStatus(1);
+        jr.setObj(user);
+        return jr;
+    }
 
     //设置vip等级
     @RequestMapping("setVip")

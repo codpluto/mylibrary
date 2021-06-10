@@ -18,6 +18,8 @@ public class Good {
     private boolean isSoldOut;
     private int conditions;
     private String bookName;
+    private String coverUrl;
+    private double expressPrice;
 
     public int getGood_id() {
         return good_id;
@@ -121,5 +123,21 @@ public class Good {
 
     public void setBookName(String bookName) {
         this.bookName = bookName;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+    }
+
+    public double getExpressPrice() {
+        return expressPrice;
+    }
+
+    public void setExpressPrice(double expressPrice) {
+        this.expressPrice = expressPrice;
     }
 }

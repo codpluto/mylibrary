@@ -7,6 +7,7 @@ import com.example.library.utils.JsonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Insert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +47,9 @@ public class OrderListController {
         JsonResult jr = new JsonResult();
         int result = orderListMapper.dealOrderList(orderID,state);
         jr.setStatus(result);
+        if(result==1){
+
+        }
         return jr;
     }
 
@@ -77,7 +81,27 @@ public class OrderListController {
         return jr;
     }
 
+    //增加（修改）快递单号
+    @RequestMapping("setPress")
+    public JsonResult setPress(String expressNumber,String orderID){
+        JsonResult jr = new JsonResult();
+        int result = orderListMapper.updateExpress(expressNumber,orderID);
+        jr.setStatus(result);
+        return jr;
+    }
 
-
+    //根据good_id查询订单
+    @RequestMapping("searchOrderByGood")
+    public JsonResult searchOrderByGood(int good_id){
+        JsonResult jr = new JsonResult();
+        OrderList orderList = orderListMapper.selectOrderByGood(good_id);
+        if(orderList==null){
+            jr.setStatus(0);
+            return jr;
+        }
+        jr.setStatus(1);
+        jr.setObj(orderList);
+        return jr;
+    }
 
 }

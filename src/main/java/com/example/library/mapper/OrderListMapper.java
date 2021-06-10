@@ -39,6 +39,12 @@ public interface OrderListMapper {
     @Delete("DELETE FROM OrderList WHERE orderID=#{orderID}")
     int deleteOrderList(@Param("orderID") String orderID);
 
+    //修改快递单号
+    @Update("UPDATE OrderList SET expressNumber=#{expressNumber} WHERE orderID=#{orderID}")
+    int updateExpress(@Param("expressNumber") String expressNumber, @Param("orderID") String orderID);
 
+    //根据good_id查询订单
+    @Select("SELECT * FROM OrderList WHERE good_id=#{good_id}")
+    OrderList selectOrderByGood(@Param("good_id") int good_id);
 
 }

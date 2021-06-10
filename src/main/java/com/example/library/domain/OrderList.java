@@ -18,6 +18,7 @@ public class OrderList {
     private int state;
     private int good_id;
     private int publisher_id;
+    private String expressNumber;
 
     public String getOrderID() {
         return orderID;
@@ -122,4 +123,13 @@ public class OrderList {
     public void setPublisher_id(int publisher_id) {
         this.publisher_id = publisher_id;
     }
+
+    public String getExpressNumber() {
+        return expressNumber;
+    }
+
+    public void setExpressNumber(String expressNumber) {
+        this.expressNumber = expressNumber;
+    }
+
 }
