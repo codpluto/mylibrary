@@ -82,8 +82,8 @@ public class OrderListController {
     }
 
     //增加（修改）快递单号
-    @RequestMapping("setPress")
-    public JsonResult setPress(String expressNumber,String orderID){
+    @RequestMapping("setExpress")
+    public JsonResult setExpress(String expressNumber,String orderID){
         JsonResult jr = new JsonResult();
         int result = orderListMapper.updateExpress(expressNumber,orderID);
         jr.setStatus(result);
