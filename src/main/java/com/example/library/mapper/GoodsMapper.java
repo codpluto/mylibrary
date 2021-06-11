@@ -47,7 +47,7 @@ public interface GoodsMapper {
     List<Good> selectGoodsBuyed(@Param("user_id") int user_id);
 
     //随机获取20件商品
-    @Select("SELECT * FROM GoodsInfo ORDER BY RAND() LIMIT 20")
+    @Select("SELECT * FROM GoodsInfo WHERE isSoldOut=false ORDER BY RAND() LIMIT 20")
     List<Good> selectPartGoods();
 
 //    //添加采购信息
