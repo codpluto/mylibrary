@@ -104,4 +104,17 @@ public class OrderListController {
         return jr;
     }
 
+    //根据订单号查询订单信息
+    @RequestMapping("searchOrderById")
+    public JsonResult searchOrderById(String orderID){
+        JsonResult jr = new JsonResult();
+        OrderList orderList = orderListMapper.selectOrderById(orderID);
+        if(orderList==null){
+            jr.setStatus(0);        //0，该订单不存在
+            return jr;
+        }
+        jr.setStatus(1);
+        jr.setObj(orderList);
+        return jr;
+    }
 }
