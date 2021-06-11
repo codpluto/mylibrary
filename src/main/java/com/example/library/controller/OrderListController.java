@@ -117,4 +117,18 @@ public class OrderListController {
         jr.setObj(orderList);
         return jr;
     }
+
+    //查询publisher的订单
+    @RequestMapping("searchPublishOrder")
+    public JsonResult searchPublishOrder(int publisher_id){
+        JsonResult jr = new JsonResult();
+        List<OrderList> orderLists = orderListMapper.selectOrderByPublisher(publisher_id);
+        if(orderLists.size()==0){
+            jr.setStatus(0);        //0，没有订单
+            return jr;
+        }
+        jr.setStatus(1);
+        jr.setObj(orderLists);
+        return jr;
+    }
 }

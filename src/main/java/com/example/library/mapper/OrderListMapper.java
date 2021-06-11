@@ -47,4 +47,8 @@ public interface OrderListMapper {
     @Select("SELECT * FROM OrderList WHERE good_id=#{good_id}")
     OrderList selectOrderByGood(@Param("good_id") int good_id);
 
+    //查询用户发布的订单
+    @Select("SELECT * FROM OrderList WHERE publisher_id=#{publisher_id}")
+    List<OrderList> selectOrderByPublisher(@Param("publisher_id") int publisher_id);
+
 }
