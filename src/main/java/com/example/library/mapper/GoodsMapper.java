@@ -27,7 +27,7 @@ public interface GoodsMapper {
 //    int updateExpress(@Param("expressPrice") double expressPrice, @Param("good_id") int good_id);
 
     //根据书名模糊查询商品
-    @Select("SELECT * FROM GoodsInfo WHERE bookName LIKE CONCAT('%',#{bookName},'%')")
+    @Select("SELECT * FROM GoodsInfo WHERE isSoldOut=false AND bookName LIKE CONCAT('%',#{bookName},'%')")
     List<Good> selectGoodsLike(@Param("bookName") String bookName);
 
     //根据id精确查询
