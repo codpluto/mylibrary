@@ -51,6 +51,9 @@ public class GoodsController {
     @RequestMapping("addGood")
     public JsonResult addGood(@RequestBody Good newgood){
         JsonResult jr = new JsonResult();
+
+        log.info("conditions:{}",newgood.getConditions());
+
         int result = goodsMapper.saveGoods(newgood.getISBN(),newgood.getOrigPrice(),newgood.getPracticalPrice(),newgood.getAuthor(),
                 newgood.getPublishDate(),newgood.getPress(),newgood.getIntroduction(),newgood.getCreateDate(),newgood.getUser_id(),
                 newgood.getConditions(),newgood.getBookName(),newgood.getCoverUrl(),newgood.getExpressPrice());
@@ -59,8 +62,8 @@ public class GoodsController {
     }
 
     //修改商品价格
-    @RequestMapping("changePrice")
-    public JsonResult changePrice(int good_id,double newPrice,double expressPrice){
+    @RequestMapping("changeGoods")
+    public JsonResult changeGoods(int good_id,double newPrice,double expressPrice,int conditions){
         JsonResult jr = new JsonResult();
         Good good = goodsMapper.selectGood(good_id);
         if(good==null){
@@ -68,10 +71,11 @@ public class GoodsController {
             return jr;
         }
         if(good.isSoldOut()==true){
-            jr.setStatus(-2);
+            jr.setStatus(-2);       //-2,
             return jr;
         }
-        int result = goodsMapper.updateGoods(newPrice,good_id,expressPrice);
+        int result = goodsMapper.updateGoods(newPrice,good_id,expressPrice,conditions);
+
         jr.setStatus(result);
         return jr;
     }
@@ -101,6 +105,30 @@ public class GoodsController {
         }
         jr.setStatus(1);
         jr.setObj(goods);
+        return jr;
+    }
+
+
+    //删除商品(仅限没卖出的)
+    @RequestMapping("deleteGoods")
+    public JsonResult deleteGoods(int good_id){
+        JsonResult jr = new JsonResult();
+        Good good = goodsMapper.selectGood(good_id);
+        if(good!=null&&good.isSoldOut()==true){
+            jr.setStatus(-1);       //-1,商品已卖出，禁止删除
+            return jr;
+        }
+        int result = goodsMapper.deleteGood(good_id);
+        jr.setStatus(result);
+        return jr;
+    }
+
+    //修改商品品相
+    @RequestMapping("changeConditions")
+    public JsonResult changeConditions(int good_id,int conditions){
+        JsonResult jr = new JsonResult();
+        int result = goodsMapper.updateConditions(good_id,conditions);
+        jr.setStatus(result);
         return jr;
     }
 
