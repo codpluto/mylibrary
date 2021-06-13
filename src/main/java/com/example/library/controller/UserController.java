@@ -74,6 +74,10 @@ public class UserController {
     public JsonResult changeUserInfo(String userName,String email,String password,String phone,int user_id){
         JsonResult jr = new JsonResult();
         User oldUser = userMapper.selectUserById(user_id);
+        if(oldUser==null){
+            jr.setStatus(-3);       //-3,user不存在
+            return jr;
+        }
         if(!Objects.equals(oldUser.getPhone(),phone)){
             User user = userMapper.selectUserByPhone(phone);
             if(user!=null){
