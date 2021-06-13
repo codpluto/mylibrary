@@ -25,8 +25,8 @@ public class UserController {
         User user = userMapper.selectUser(phone);
         JsonResult jr = new JsonResult();
         if(user==null){
-            User u = new User(null,null,null,null,0);
-            jr.setObj(u);
+            //User u = new User(null,null,null,null,0);
+            //jr.setObj(u);
             jr.setStatus(-1);   //-1，账户不存在
             return jr;
         }
@@ -35,8 +35,8 @@ public class UserController {
             jr.setObj(user);
             return jr;
         }
-        User u = new User(null,null,null,null,0);
-        jr.setObj(u);
+        //User u = new User(null,null,null,null,0);
+        //jr.setObj(u);
         jr.setStatus(0);        //0，密码错误
         return jr;
     }
@@ -71,7 +71,7 @@ public class UserController {
 
     //修改用户信息
     @RequestMapping("changeUserInfo")
-    public JsonResult changeUserInfo(String userName,String email,String password,String phone,int user_id){
+    public JsonResult changeUserInfo(String username,String email,String password,String phone,int user_id){
         JsonResult jr = new JsonResult();
         User oldUser = userMapper.selectUserById(user_id);
         if(oldUser==null){
@@ -92,7 +92,7 @@ public class UserController {
                 return jr;
             }
         }
-        int result = userMapper.updateUser(userName,email,password,phone,user_id);
+        int result = userMapper.updateUser(username,email,password,phone,user_id);
         jr.setStatus(result);
         return jr;
     }

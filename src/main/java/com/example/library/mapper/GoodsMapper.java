@@ -16,9 +16,11 @@ public interface GoodsMapper {
                   @Param("createDate") String createDate, @Param("user_id") int user_id, @Param("conditions") int conditions, @Param("bookName") String bookName,
                   @Param("coverUrl") String coverUrl, @Param("expressPrice") double expressPrice);
 
-    //修改商品价格
-    @Update("UPDATE GoodsInfo SET practicalPrice=#{practicalPrice},expressPrice=#{expressPrice},conditions=#{conditions} WHERE good_id=#{good_id}")
-    int updateGoods(@Param("practicalPrice") double practicalPrice, @Param("good_id") int good_id, @Param("expressPrice") double expressPrice, @Param("conditions") int conditions);
+    //修改商品信息
+    @Update("UPDATE GoodsInfo SET practicalPrice=#{practicalPrice},expressPrice=#{expressPrice},conditions=#{conditions}," +
+            "coverUrl=#{coverUrl},introduction=#{introduction} WHERE good_id=#{good_id}")
+    int updateGoods(@Param("practicalPrice") double practicalPrice, @Param("good_id") int good_id, @Param("expressPrice") double expressPrice,
+                    @Param("conditions") int conditions, @Param("coverUrl") String coverUrl, @Param("introduction") String introduction);
 
 //    //修改商品运费
 //    @Update("UPDATE GoodsInfo SET expressPrice=#{expressPrice} WHERE good_id=#{good_id}")
