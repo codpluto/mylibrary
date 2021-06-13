@@ -62,8 +62,8 @@ public class GoodsController {
     }
 
     //修改商品价格
-    @RequestMapping("changePrice")
-    public JsonResult changePrice(int good_id,double newPrice,double expressPrice){
+    @RequestMapping("changeGoods")
+    public JsonResult changeGoods(int good_id,double newPrice,double expressPrice,int conditions){
         JsonResult jr = new JsonResult();
         Good good = goodsMapper.selectGood(good_id);
         if(good==null){
@@ -71,10 +71,11 @@ public class GoodsController {
             return jr;
         }
         if(good.isSoldOut()==true){
-            jr.setStatus(-2);
+            jr.setStatus(-2);       //-2,
             return jr;
         }
-        int result = goodsMapper.updateGoods(newPrice,good_id,expressPrice);
+        int result = goodsMapper.updateGoods(newPrice,good_id,expressPrice,conditions);
+
         jr.setStatus(result);
         return jr;
     }
