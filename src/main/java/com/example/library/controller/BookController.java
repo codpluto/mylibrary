@@ -88,7 +88,7 @@ public class BookController {
 
     //添加书籍
     @RequestMapping("addBook")
-    @ResponseBody
+    //@ResponseBody
     public JsonResult addBook(@RequestBody Book newbook) {
 //        if(newbook.getShelf_id()==0)
 //            newbook.setShelf_id(null);
@@ -116,7 +116,7 @@ public class BookController {
 
     //更新书籍
     @RequestMapping("updateBook")
-    @ResponseBody
+    //@ResponseBody
     public JsonResult changeBook(@RequestBody Book book){
 //            String isbn,String bookName,String coverUrl,String bookShelf,String notes,String lender,
 //                          boolean isLentOut,String buyFrom,String buyDate,double price,String author,String translator,

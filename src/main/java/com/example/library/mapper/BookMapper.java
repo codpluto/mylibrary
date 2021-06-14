@@ -61,4 +61,8 @@ public interface BookMapper {
 
     @Select("SELECT COUNT(isbn) FROM BookInfo WHERE user_id=#{user_id}")
     int countBookByUser(@Param("user_id") int user_id);
+
+
+
+
 }

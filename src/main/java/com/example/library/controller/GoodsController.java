@@ -37,6 +37,10 @@ public class GoodsController {
     @RequestMapping("searchGoodsLike")
     public JsonResult searchGoodsLike(String bookName){
         JsonResult jr = new JsonResult();
+        if(bookName.length()==0){
+            jr.setStatus(0);
+            return jr;
+        }
         List<Good> goods = goodsMapper.selectGoodsLike(bookName);
         if(goods.size()==0){
             jr.setStatus(0);        //0,没有搜寻结果

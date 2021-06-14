@@ -46,8 +46,8 @@ public interface GoodsMapper {
     @Select("SELECT * FROM GoodsInfo WHERE good_id in (SELECT good_id FROM OrderList WHERE user_id=#{user_id})")
     List<Good> selectGoodsBuyed(@Param("user_id") int user_id);
 
-    //随机获取20件商品
-    @Select("SELECT * FROM GoodsInfo WHERE isSoldOut=false ORDER BY RAND() LIMIT 20")
+    //随机获取30件商品
+    @Select("SELECT * FROM GoodsInfo WHERE isSoldOut=false ORDER BY RAND() LIMIT 30")
     List<Good> selectPartGoods();
 
     //删除商品
