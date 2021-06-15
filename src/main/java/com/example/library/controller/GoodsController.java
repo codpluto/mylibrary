@@ -37,6 +37,10 @@ public class GoodsController {
     @RequestMapping("searchGoodsLike")
     public JsonResult searchGoodsLike(String bookName){
         JsonResult jr = new JsonResult();
+        if(bookName.length()==0){
+            jr.setStatus(0);
+            return jr;
+        }
         List<Good> goods = goodsMapper.selectGoodsLike(bookName);
         if(goods.size()==0){
             jr.setStatus(0);        //0,没有搜寻结果
@@ -51,12 +55,11 @@ public class GoodsController {
     @RequestMapping("addGood")
     public JsonResult addGood(@RequestBody Good newgood){
         JsonResult jr = new JsonResult();
-
-        log.info("conditions:{}",newgood.getConditions());
-
+        //调用数据库insert语句
         int result = goodsMapper.saveGoods(newgood.getISBN(),newgood.getOrigPrice(),newgood.getPracticalPrice(),newgood.getAuthor(),
                 newgood.getPublishDate(),newgood.getPress(),newgood.getIntroduction(),newgood.getCreateDate(),newgood.getUser_id(),
                 newgood.getConditions(),newgood.getBookName(),newgood.getCoverUrl(),newgood.getExpressPrice());
+        //设置状态码
         jr.setStatus(result);
         return jr;
     }

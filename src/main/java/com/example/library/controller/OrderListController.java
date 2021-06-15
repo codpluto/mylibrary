@@ -29,14 +29,17 @@ public class OrderListController {
     @RequestMapping("addOrderList")
     public JsonResult addOrderList(@RequestBody OrderList orderList){
         JsonResult jr = new JsonResult();
+        //调用数据库insert语句
         int result = orderListMapper.saveOrderList(orderList.getOrderID(),orderList.getUser_id(),orderList.getCreateDate(),
                 orderList.getConsignee(),orderList.getPhone(),orderList.getOrigPrice(),orderList.getPracticalPrice(),
                 orderList.getNotes(),orderList.getAddress(),orderList.getGood_id(),orderList.getPublisher_id());
+        //result=0，插入操作失败，设置状态码0
         if(result==0){
             jr.setStatus(0);        //0,增加订单失败
             return jr;
         }
         jr.setStatus(1);
+        //商品卖出后修改商品状态，并下架商品
         goodsMapper.updateSoldOut(orderList.getGood_id(),true);
         return jr;
     }
@@ -45,11 +48,9 @@ public class OrderListController {
     @RequestMapping("changeState")
     public JsonResult changeState(int state,String orderID){
         JsonResult jr = new JsonResult();
+        //修改订单状态，0已付款，1已发货，2交易完成
         int result = orderListMapper.dealOrderList(orderID,state);
         jr.setStatus(result);
-        if(result==1){
-
-        }
         return jr;
     }
 
@@ -85,6 +86,7 @@ public class OrderListController {
     @RequestMapping("setExpress")
     public JsonResult setExpress(String expressNumber,String orderID){
         JsonResult jr = new JsonResult();
+        //调用数据库Update语句
         int result = orderListMapper.updateExpress(expressNumber,orderID);
         jr.setStatus(result);
         return jr;

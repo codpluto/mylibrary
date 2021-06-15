@@ -10,6 +10,7 @@ import com.example.library.utils.JsonResult;
 import com.example.library.utils.Press2Number;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,14 +51,18 @@ public class BookController {
     //模糊查询书籍
     @RequestMapping("searchBookLike")
     public JsonResult searchBookLike(int user_id, String bookName){
-        log.info("user_id:{}",user_id);
-        log.info("bookName:{}",bookName);
+//        log.info("user_id:{}",user_id);
+//        log.info("bookName:{}",bookName);
+        JsonResult jr = new JsonResult();
+        if(bookName.length()==0){
+            jr.setStatus(0);
+            return jr;
+        }
         List<Book> book = bookMapper.selectBookLike(bookName,user_id);
         for(int i=0;i<book.size();i++){
             if(book.get(i).getShelf_id()!=null)
                 book.get(i).setShelfName(shelfMapper.getShelfNameById(book.get(i).getShelf_id()));
         }
-        JsonResult jr = new JsonResult();
         jr.setObj(book);
         if(book.size()==0){
             jr.setStatus(0);        //0,未查到
@@ -70,17 +75,20 @@ public class BookController {
     //精确查询书籍
     @RequestMapping("searchBook")
     public JsonResult searchBook(int user_id,String isbn){
+//        log.info("user_id:{}",user_id);
+//        log.info("isbn:{}",isbn);
         Book book = bookMapper.selectBook(isbn,user_id);
-
         JsonResult jr = new JsonResult();
-        if(book.getShelf_id()!=null)
-            book.setShelfName(shelfMapper.getShelfNameById(book.getShelf_id()));
-        jr.setObj(book);
-        System.out.println(jr.getObj());
         if(book==null){
             jr.setStatus(0);
             return jr;
         }
+
+        if(book.getShelf_id()!=null)
+            book.setShelfName(shelfMapper.getShelfNameById(book.getShelf_id()));
+        jr.setObj(book);
+        //System.out.println(jr.getObj());
+
         jr.setStatus(1);
         return jr;
     }
@@ -88,24 +96,13 @@ public class BookController {
 
     //添加书籍
     @RequestMapping("addBook")
-    @ResponseBody
     public JsonResult addBook(@RequestBody Book newbook) {
-//        if(newbook.getShelf_id()==0)
-//            newbook.setShelf_id(null);
-        //log.info("newbook:{}",newbook);
-
-        Book book = bookMapper.selectBook(newbook.getIsbn(),newbook.getUser_id());
         JsonResult jr = new JsonResult();
-        if(book!=null){
-            jr.setStatus(-1);
-            return jr;
-        }
-        //String result = BookService.getDataByIsbn(isbn);
-
-        //jr.setObj(JSON.toJSON(result));
+        //如果添加时设置书架了，修改该书架藏书数量
         if(newbook.getShelf_id()!=null){
             shelfMapper.updateCountOfBooks_plus(newbook.getShelf_id());
         }
+        //调用insert语句插入记录
         int resultCount = bookMapper.saveBook(newbook.getIsbn(),newbook.getBookName(),newbook.getCoverUrl(),newbook.getNotes(),
                 newbook.getLender(),newbook.isLentOut(),newbook.getBuyFrom(),newbook.getBuyDate(),newbook.getPrice(),
                 newbook.getAuthor(),newbook.getTranslator(),newbook.getPress(),newbook.getPublicationDate(),newbook.getTotalPages(),newbook.getReadProgress(),
@@ -116,13 +113,7 @@ public class BookController {
 
     //更新书籍
     @RequestMapping("updateBook")
-    @ResponseBody
     public JsonResult changeBook(@RequestBody Book book){
-//            String isbn,String bookName,String coverUrl,String bookShelf,String notes,String lender,
-//                          boolean isLentOut,String buyFrom,String buyDate,double price,String author,String translator,
-//                          String press,String publicationDate,int totalPages,int readProgress,String contentIntroduction,
-//                          String authorIntroduction,String user_id){
-
         Book oriBook = bookMapper.selectBook(book.getIsbn(),book.getUser_id());
         Integer shelf_id = oriBook.getShelf_id();
         if(shelf_id!=null){
@@ -136,8 +127,7 @@ public class BookController {
                 book.isLentOut(),book.getBuyFrom(),book.getBuyDate(),book.getPrice(),book.getAuthor(),book.getTranslator(),book.getPress(),
                 book.getPublicationDate(),book.getTotalPages(),book.getReadProgress(),book.getContentIntroduction(),book.getAuthorIntroduction(),
                 book.getUser_id(),book.getShelf_id());
-        //int resultCount = bookMapper.updateBook(isbn,bookName,coverUrl,bookShelf,notes,lender,isLentOut,buyFrom,buyDate,
-        //        price,publicationDate,totalPages,readProgress,contentIntroduction,authorIntroduction,user_id);
+
         JsonResult jr = new JsonResult();
         jr.setStatus(resultCount);
         return jr;
@@ -145,20 +135,27 @@ public class BookController {
 
     //删除书籍
     @RequestMapping("deleteBook")
-    public JsonResult dropBook(@RequestBody Book book){
-        int resultCount = bookMapper.deleteBook(book.getUser_id(),book.getIsbn());
-
+    public JsonResult dropBook(int user_id,String isbn){
         JsonResult jr = new JsonResult();
-        jr.setStatus(resultCount);
-        if(resultCount==1){
-            Book oriBook = bookMapper.selectBook(book.getIsbn(),book.getUser_id());
-            Integer shelf_id = oriBook.getShelf_id();
-            if(shelf_id!=null){
-                shelfMapper.updateCountOfBook_minus(shelf_id);
-            }
+
+        log.info("user_id:{}",user_id);
+        log.info("isbn:{}",isbn);
+
+        Book book = bookMapper.selectBook(isbn,user_id);
+        if(book==null){
+            jr.setStatus(0);    //没有该书
+            return jr;
         }
+        Integer shelf_id = book.getShelf_id();
+        if(shelf_id!=null){
+            shelfMapper.updateCountOfBook_minus(shelf_id);
+        }
+        int result = bookMapper.deleteBook(user_id,isbn);
+        jr.setStatus(result);
         return jr;
     }
+
+
 
     //获取用户全部图书信息
     @RequestMapping("getAllBook")
@@ -184,10 +181,6 @@ public class BookController {
         JsonResult jr = new JsonResult();
         int count = bookMapper.countAllPress(user_id);
         jr.setObj(count);
-//        if(count==0){
-//            jr.setStatus(0);
-//            return jr;
-//        }
         jr.setStatus(1);
         return jr;
     }
@@ -203,16 +196,7 @@ public class BookController {
         return jr;
     }
 
-    //添加图书
-//    @RequestMapping("addBook")
-//    public JsonResult addBook(String isbn,int user_id) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
-//        JsonResult jr = new JsonResult();
-//        String data = BookService.getDataByIsbn(isbn);
-//        log.info(data);
-//        //JSON jsdata = (JSON) JSON.toJSON(data);
-//        jr.setObj(data);
-//        return jr;
-//    }
+
     //调用查书API
     @RequestMapping("getBookData")
     public JsonResult getBookData(String isbn) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
@@ -267,6 +251,7 @@ public class BookController {
         return jr;
     }
 
+    //查询每个用户的藏书数量
     @RequestMapping("countBooksByUser")
     public JsonResult countBooksByUser(int user_id){
         JsonResult jr = new JsonResult();

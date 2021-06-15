@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface BookMapper {
+    //增加藏书
     @Insert("INSERT INTO BookInfo VALUES(#{isbn},#{bookName},#{coverUrl},#{notes},#{lender},#{isLentOut}," +
             "#{buyFrom},#{buyDate},#{price},#{author},#{translator},#{press},#{publicationDate},#{totalPages},#{readProgress}," +
             "#{contentIntroduction},#{authorIntroduction},#{user_id},#{shelf_id})")
@@ -21,7 +22,7 @@ public interface BookMapper {
                  @Param("authorIntroduction") String authorIntroduction, @Param("user_id") int user_id, @Param("shelf_id") Integer shelf_id);
 
 
-
+    //精确查询单本图书信息
     @Select("SELECT * FROM BookInfo WHERE ISBN=#{isbn} AND user_id=#{user_id}")
     Book selectBook(@Param("isbn") String isbn, @Param("user_id") int user_id);
 
@@ -61,4 +62,8 @@ public interface BookMapper {
 
     @Select("SELECT COUNT(isbn) FROM BookInfo WHERE user_id=#{user_id}")
     int countBookByUser(@Param("user_id") int user_id);
+
+
+
+
 }
