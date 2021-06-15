@@ -39,8 +39,6 @@ public class ShelfController {
     @RequestMapping("getBookInShelf")
     public JsonResult getBookInShelf(int user_id,String shelfName){
         JsonResult jr = new JsonResult();
-        log.info("user_id:{}",user_id);
-        log.info("shelfName:{}",shelfName);
         List<Book> books = shelfMapper.selectBookInShelf(user_id,shelfName);
         for(int i=0;i<books.size();i++){
             if(books.get(i).getShelf_id()!=null)

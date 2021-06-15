@@ -55,12 +55,11 @@ public class GoodsController {
     @RequestMapping("addGood")
     public JsonResult addGood(@RequestBody Good newgood){
         JsonResult jr = new JsonResult();
-
-        log.info("conditions:{}",newgood.getConditions());
-
+        //调用数据库insert语句
         int result = goodsMapper.saveGoods(newgood.getISBN(),newgood.getOrigPrice(),newgood.getPracticalPrice(),newgood.getAuthor(),
                 newgood.getPublishDate(),newgood.getPress(),newgood.getIntroduction(),newgood.getCreateDate(),newgood.getUser_id(),
                 newgood.getConditions(),newgood.getBookName(),newgood.getCoverUrl(),newgood.getExpressPrice());
+        //设置状态码
         jr.setStatus(result);
         return jr;
     }
